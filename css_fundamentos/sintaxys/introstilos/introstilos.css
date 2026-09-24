@@ -1,0 +1,31 @@
+.colores{
+    color:red;
+}
+.fondo{
+    color: white;
+    background-color: blue;
+}
+
+.fondoImagen{
+    color: white;
+    background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSguMOouoIXZPfbHQShOsWZNnYbwWBV04OjSAq0kABWgbAUwKLnzTYM7ro&s=10);
+    background-position: center;
+}
+
+.cambiarancho{
+    background-color: aquamarine;
+    width:100px;
+}
+
+.cambiaralto{
+    background-color: palegoldenrod;
+    height: 200px;
+}
+
+.tarjeta{
+    border-style: solid;
+    border-color: rgb(150 150 150);
+    border-width: 1px;
+    border-top: none;
+    padding: 10px 20px;
+}
