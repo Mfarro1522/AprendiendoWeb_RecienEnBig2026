@@ -1,0 +1,22 @@
+h1{
+    color:red;
+}
+
+p{
+    color:blue;
+    font-size: 16pt;
+}
+
+#primeranoticia {
+    color: green;
+    font-size: 12pt;
+}
+
+#segundanoticia {
+    color:darkmagenta
+}
+
+.encabezado{
+    font-size:44pt;
+    color: yellow;
+}
