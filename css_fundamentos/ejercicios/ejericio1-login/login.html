@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="contenedor-header">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="icon icon-tabler icons-tabler-outline icon-tabler-circle-dotted-letter-m">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M9 16v-8l3 5l3 -5v8" />
+                <path d="M7.5 4.21v.01" />
+                <path d="M4.21 7.5v.01" />
+                <path d="M3 12v.01" />
+                <path d="M4.21 16.5v.01" />
+                <path d="M7.5 19.79v.01" />
+                <path d="M12 21v.01" />
+                <path d="M16.5 19.79v.01" />
+                <path d="M19.79 16.5v.01" />
+                <path d="M21 12v.01" />
+                <path d="M19.79 7.5v.01" />
+                <path d="M16.5 4.21v.01" />
+                <path d="M12 3v.01" />
+            </svg>
+            <p>MAURICIO</p>
+        </div>
+        <div class="contenedor-header">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="icon icon-tabler icons-tabler-outline icon-tabler-point">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M8 12a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+            </svg>
+            <p>AUTH V2.4</p>
+        </div>
+    </header>
+    
+    <main>
+        <div class="card-login">
+            <div class="cabecera-card">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="currentColor"
+                    class="icon icon-tabler icons-tabler-filled icon-tabler-circle-key">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path
+                        d="M12 2c5.523 0 10 4.477 10 10a10 10 0 0 1 -20 0c0 -5.523 4.477 -10 10 -10zm2 5a3 3 0 0 0 -2.98 2.65l-.015 .174l-.005 .176l.005 .176c.019 .319 .087 .624 .197 .908l.09 .209l-3.5 3.5l-.082 .094a1 1 0 0 0 0 1.226l.083 .094l1.5 1.5l.094 .083a1 1 0 0 0 1.226 0l.094 -.083l.083 -.094a1 1 0 0 0 0 -1.226l-.083 -.094l-.792 -.793l.585 -.585l.793 .792l.094 .083a1 1 0 0 0 1.403 -1.403l-.083 -.094l-.792 -.793l.792 -.792a3 3 0 1 0 1.293 -5.708zm0 2a1 1 0 1 1 0 2a1 1 0 0 1 0 -2" />
+                </svg>
+                <h2>Bienvenido de Nuevo</h2>
+                <p>porfavor ingrese sus datos</p>
+                <br>
+            </div>
+            <form action="appejemplo.html" method="get"> <!--se que no es asi asi que normal solo imito la estetica-->
+                <div class="nomusr">
+                    <label for="nombreusuario">Nombre de usuario</label>
+                    <br>
+                    <input class="inputnomusr" type="text">
+                </div>
+                <a class="recuperacontra" href="recuperacontra.html">olvidaste tu contraseña?</a>
+                <div>
+                    <label for="contraseña">Contraseña</label>
+                    <br>
+                    <div class="inputpsw">
+                        <input type="password">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"
+                            class="icon icon-tabler icons-tabler-outline icon-tabler-eye-off">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" />
+                            <path
+                                d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" />
+                            <path d="M3 3l18 18" />
+                        </svg>
+                    </div>
+                </div>
+                <div>
+                    <input type="checkbox" id="recordar" name="recordar">
+                    <label for="recordar">Recordar en este dispositivo</label>
+                </div>
+                <button type="submit" class="btn-login">
+                    <span>Inciar Sesión</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                        class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-right">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M5 12l14 0" />
+                        <path d="M15 16l4 -4" />
+                        <path d="M15 8l4 4" />
+                    </svg>
+                </button>
+
+            </form>
+            
+            <div class="iniciosAlternativos">
+                <p>o continuar con</p>
+                <div class="btnotroslogins">
+                    <button>
+                    <img src="logotipo-de-github.png" alt="logo-github" width="20">
+                    <span>GitHub</span>
+                </button>
+                <button>
+                    <img src="pngwing.com.png" alt="logo-google" width="20">
+                    <span>Google</span>
+                </button>
+                </div>
+                <p>¿ no tienes una cuenta ?<a href="crearcuenta.html"><b>crear cuenta</b></a></p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy 2026 MAURICIO SYSTEMS INC.</p>
+        <p>SECURITY PROTOCOLS SYSTEM HEALTH</p>
+    </footer>
+
+</body>
+
+</html>
