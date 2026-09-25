@@ -1,6 +1,0 @@
-Nota de práctica (ejercicio 12)
-===============================
-
-Este archivo existe para que practiques enlaces de descarga
-con rutas relativas. Si puedes leer esto desde el navegador,
-tu enlace funcionó. :)

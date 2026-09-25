@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Taller HTML + CSS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  color-scheme: dark;
+  --bg: #0c0d10;
+  --bg-2: #13151a;
+  --bg-3: #1b1e25;
+  --line: #262a33;
+  --line-2: #353a45;
+  --text: #ecebe6;
+  --muted: #9a9ca3;
+  --dim: #6b6e76;
+  --ok: #b8f35a;
+  --warn: #ffb547;
+  --b1: #ff8a3d; /* cajas */
+  --b2: #4cc9f0; /* grid */
+  --b3: #b8f35a; /* estados */
+  --b4: #c77dff; /* apps */
+  --b5: #ffd23f; /* movimiento */
+  --b6: #ff4d6d; /* precisión */
+  --display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --sans: 'Instrument Sans', system-ui, sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 4.5rem; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font-family: var(--sans); font-size: 16px; line-height: 1.6;
+}
+a { color: inherit; }
+code, .mono { font-family: var(--mono); }
+code { font-size: .88em; background: var(--bg-3); border: 1px solid var(--line); border-radius: 4px; padding: 0 .3em; }
+.wrap { width: min(72rem, 100% - 2rem); margin-inline: auto; }
+
+/* ---------- Cabecera ---------- */
+.hero { padding: 4rem 0 2.5rem; border-bottom: 1px solid var(--line); }
+.kicker { font-family: var(--mono); font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.hero h1 {
+  font-family: var(--display); font-weight: 800;
+  font-size: clamp(2.6rem, 7vw, 5.2rem); line-height: .95; letter-spacing: -.035em;
+  margin: .6rem 0 1rem;
+}
+.hero h1 em { font-style: normal; color: var(--b5); }
+.hero .lead { max-width: 40rem; color: var(--muted); font-size: 1.08rem; margin: 0; }
+.progreso { margin-top: 2.2rem; display: grid; gap: .6rem; max-width: 40rem; }
+.progreso .row { display: flex; justify-content: space-between; align-items: baseline; font-family: var(--mono); font-size: .8rem; color: var(--muted); }
+.progreso .row b { font-family: var(--display); font-size: 1.9rem; color: var(--text); font-weight: 700; }
+.segmentos { display: grid; grid-template-columns: repeat(14, 1fr); gap: 4px; }
+.segmentos a {
+  height: 14px; border-radius: 3px; background: var(--bg-3); border: 1px solid var(--line);
+  position: relative; transition: transform .15s;
+}
+.segmentos a:hover { transform: translateY(-2px); }
+.segmentos a.curso { background: repeating-linear-gradient(135deg, var(--c) 0 3px, transparent 3px 7px); border-color: var(--c); }
+.segmentos a.hecho { background: var(--c); border-color: var(--c); }
+
+.como { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1rem; margin-top: 2.5rem; }
+.paso { border: 1px solid var(--line); border-radius: 12px; padding: 1rem 1.1rem; background: var(--bg-2); }
+.paso .n { font-family: var(--mono); font-size: .75rem; color: var(--dim); }
+.paso h3 { font-family: var(--display); font-size: 1.1rem; margin: .2rem 0 .3rem; }
+.paso p { margin: 0; color: var(--muted); font-size: .92rem; }
+.arbol {
+  font-family: var(--mono); font-size: .78rem; white-space: pre; overflow-x: auto;
+  color: var(--muted); background: var(--bg); border: 1px solid var(--line); border-radius: 8px;
+  padding: .7rem .9rem; margin-top: .6rem;
+}
+.arbol b { color: var(--text); font-weight: 500; }
+
+/* ---------- Navegación de bloques ---------- */
+.nav {
+  position: sticky; top: 0; z-index: 10;
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  backdrop-filter: blur(10px); border-bottom: 1px solid var(--line);
+}
+.nav ul { list-style: none; margin: 0; padding: .7rem 0; display: flex; gap: .4rem; overflow-x: auto; scrollbar-width: none; }
+.nav a {
+  display: flex; align-items: center; gap: .45rem; white-space: nowrap; text-decoration: none;
+  font-family: var(--mono); font-size: .78rem; padding: .3rem .7rem; border-radius: 99px;
+  border: 1px solid var(--line); color: var(--muted);
+}
+.nav a::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--c); }
+.nav a:hover { color: var(--text); border-color: var(--c); }
+
+/* ---------- Bloques ---------- */
+.bloque { padding: 3.5rem 0 1rem; }
+.bloque-head { display: flex; align-items: end; gap: 1.2rem; flex-wrap: wrap; margin-bottom: 1.8rem; }
+.bloque-num { font-family: var(--display); font-weight: 800; font-size: 4.5rem; line-height: .8; color: var(--c); letter-spacing: -.04em; }
+.bloque-head h2 { font-family: var(--display); font-size: 2rem; margin: 0; line-height: 1; letter-spacing: -.02em; }
+.bloque-head p { margin: .35rem 0 0; color: var(--muted); }
+
+/* ---------- Proyecto ---------- */
+.proyecto {
+  --c: var(--b1);
+  display: grid; grid-template-columns: 17rem 1fr; gap: 0;
+  border: 1px solid var(--line); border-radius: 16px; overflow: hidden;
+  background: var(--bg-2); margin-bottom: 1.6rem;
+  transition: border-color .2s;
+}
+.proyecto.hecho { border-color: color-mix(in srgb, var(--c) 55%, transparent); }
+.portada { position: relative; background: var(--bg-3); min-height: 15rem; border-right: 1px solid var(--line); overflow: hidden; }
+.portada > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.portada::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgb(0 0 0 / .75), transparent 45%); pointer-events: none; }
+.portada .id {
+  position: absolute; left: 1rem; bottom: .8rem; z-index: 1;
+  font-family: var(--display); font-weight: 800; font-size: 2.6rem; line-height: 1; letter-spacing: -.03em; color: #fff;
+}
+.portada .id small { display: block; font-family: var(--mono); font-weight: 500; font-size: .7rem; letter-spacing: .1em; color: var(--c); }
+.cuerpo { padding: 1.5rem 1.7rem 1.6rem; min-width: 0; }
+.p-top { display: flex; align-items: start; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.p-top h3 { font-family: var(--display); font-size: 1.6rem; line-height: 1.1; margin: 0; letter-spacing: -.02em; }
+.meta { display: flex; gap: .4rem; flex-wrap: wrap; margin-top: .5rem; }
+.pill { font-family: var(--mono); font-size: .7rem; border: 1px solid var(--line-2); border-radius: 99px; padding: .1rem .55rem; color: var(--muted); }
+.estado { font-family: var(--mono); font-size: .72rem; padding: .2rem .6rem; border-radius: 6px; background: var(--bg-3); color: var(--dim); white-space: nowrap; }
+.estado.curso { color: var(--c); background: color-mix(in srgb, var(--c) 12%, transparent); }
+.estado.hecho { color: #0c0d10; background: var(--c); font-weight: 600; }
+.encargo { font-size: 1.02rem; margin: 1rem 0 1.2rem; }
+
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+.caja h4 {
+  font-family: var(--mono); font-size: .7rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--dim); margin: 0 0 .5rem;
+}
+.caja ul { margin: 0; padding: 0; list-style: none; display: grid; gap: .45rem; }
+.caja li { font-size: .92rem; padding-left: 1.3rem; position: relative; }
+.reglas li::before { content: '✕'; position: absolute; left: 0; color: var(--b6); font-size: .8rem; top: .1rem; }
+.topes li::before { content: '?'; position: absolute; left: .15rem; color: var(--c); font-family: var(--mono); font-weight: 600; }
+
+.archivos { margin-top: 1.3rem; }
+.files { display: flex; flex-wrap: wrap; gap: .4rem; }
+.files a {
+  font-family: var(--mono); font-size: .75rem; text-decoration: none;
+  border: 1px solid var(--line); background: var(--bg); border-radius: 6px; padding: .2rem .55rem; color: var(--muted);
+}
+.files a:hover { border-color: var(--c); color: var(--text); }
+.falta {
+  margin-top: .7rem; font-size: .85rem; border-left: 3px solid var(--warn); padding: .4rem .8rem;
+  background: color-mix(in srgb, var(--warn) 8%, transparent); border-radius: 0 6px 6px 0;
+}
+.falta b { color: var(--warn); }
+.extra { margin-top: 1.1rem; font-size: .9rem; color: var(--muted); }
+.extra b { color: var(--text); font-weight: 600; }
+
+/* Estoy perdido */
+details.ruta { margin-top: 1.4rem; border: 1px dashed var(--line-2); border-radius: 12px; }
+details.ruta[open] { border-style: solid; border-color: color-mix(in srgb, var(--c) 45%, var(--line)); }
+details.ruta summary {
+  list-style: none; cursor: pointer; user-select: none;
+  display: flex; align-items: center; gap: .7rem; padding: .75rem 1rem;
+}
+details.ruta summary::-webkit-details-marker { display: none; }
+.brujula {
+  width: 2rem; height: 2rem; border-radius: 50%; flex-shrink: 0;
+  border: 1.5px solid var(--c); display: grid; place-items: center; position: relative;
+}
+.brujula::before {
+  content: ''; width: 3px; height: 1.1rem; border-radius: 2px;
+  background: linear-gradient(var(--c) 50%, var(--dim) 50%);
+  transform: rotate(35deg); transition: transform .5s cubic-bezier(.3, 1.6, .5, 1);
+}
+details.ruta summary:hover .brujula::before { transform: rotate(-20deg); }
+details.ruta[open] .brujula::before { transform: rotate(0deg); }
+.s-txt b { display: block; font-size: .95rem; }
+.s-txt span { font-size: .8rem; color: var(--muted); }
+.ruta-body { padding: .3rem 1.1rem 1.2rem; display: grid; gap: 1.2rem; }
+.ruta-body h5 { font-family: var(--mono); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--c); margin: 0 0 .5rem; }
+.ruta-body ol { margin: 0; padding-left: 1.3rem; display: grid; gap: .35rem; font-size: .93rem; }
+.ruta-body ol li::marker { font-family: var(--mono); color: var(--dim); }
+.tags { display: flex; flex-wrap: wrap; gap: .35rem; }
+.tags a {
+  font-family: var(--mono); font-size: .76rem; text-decoration: none;
+  padding: .15rem .5rem; border-radius: 5px; border: 1px solid var(--line-2); background: var(--bg);
+}
+.tags a.h { color: #ff9e7a; }
+.tags a.c { color: #7ad7ff; }
+.tags a:hover { border-color: var(--c); }
+.buscar { display: flex; flex-direction: column; gap: .35rem; }
+.buscar a {
+  font-size: .88rem; text-decoration: none; color: var(--muted); display: flex; gap: .5rem; align-items: baseline;
+}
+.buscar a::before { content: '⌕'; color: var(--c); }
+.buscar a:hover { color: var(--text); text-decoration: underline; text-decoration-color: var(--c); }
+.consejos { display: grid; gap: .5rem; }
+.consejos p { margin: 0; font-size: .9rem; padding: .5rem .75rem; background: var(--bg); border-radius: 8px; border: 1px solid var(--line); }
+
+/* Checklist */
+.check { margin-top: 1.4rem; border-top: 1px solid var(--line); padding-top: 1.1rem; }
+.check ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .35rem; }
+.check label { display: flex; gap: .6rem; align-items: start; cursor: pointer; font-size: .9rem; color: var(--muted); }
+.check input {
+  appearance: none; width: 1.05rem; height: 1.05rem; margin: .2rem 0 0; flex-shrink: 0;
+  border: 1.5px solid var(--line-2); border-radius: 4px; display: grid; place-items: center; cursor: pointer;
+}
+.check input::after { content: '✓'; font-size: .75rem; font-weight: 700; color: #0c0d10; transform: scale(0); transition: transform .15s; }
+.check input:checked { background: var(--c); border-color: var(--c); }
+.check input:checked::after { transform: scale(1); }
+.check input:focus-visible { outline: 2px solid var(--c); outline-offset: 2px; }
+.check label:has(input:checked) { color: var(--text); }
+
+/* ---------- Portadas hechas con CSS ---------- */
+.fake { position: absolute; inset: 0; display: grid; place-items: center; padding: 1.2rem 1.2rem 4rem; }
+.f-horario { display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(12, 1fr); gap: 3px; width: 100%; height: 100%; }
+.f-horario i { border-radius: 3px; opacity: .9; }
+.f-bento { display: grid; grid-template-areas: "a a b" "a a c" "d e e"; gap: 6px; width: 100%; height: 100%; }
+.f-bento i { border-radius: 8px; background: var(--bg); border: 1px solid var(--line-2); }
+.f-bento i:nth-child(1) { grid-area: a; background: linear-gradient(135deg, var(--b2), #2a6f97); border: 0; }
+.f-bento i:nth-child(2) { grid-area: b; } .f-bento i:nth-child(3) { grid-area: c; background: var(--b5); border: 0; }
+.f-bento i:nth-child(4) { grid-area: d; } .f-bento i:nth-child(5) { grid-area: e; }
+.f-form { width: 100%; display: grid; gap: .6rem; }
+.f-form i { display: block; height: 2.1rem; border-radius: 8px; border: 1.5px solid var(--line-2); position: relative; }
+.f-form i::before { content: ''; position: absolute; left: .6rem; top: -.35rem; width: 3rem; height: .45rem; border-radius: 3px; background: var(--muted); }
+.f-form i.ok { border-color: var(--b3); } .f-form i.no { border-color: var(--b6); }
+.f-form i.no::before { background: var(--b6); } .f-form i.ok::before { background: var(--b3); }
+.f-form .sw { width: 2.8rem; height: 1.5rem; border-radius: 99px; background: var(--b3); position: relative; }
+.f-form .sw::after { content: ''; position: absolute; right: 3px; top: 3px; width: 1.1rem; height: 1.1rem; border-radius: 50%; background: #fff; }
+.f-tareas { width: 100%; display: grid; gap: .55rem; }
+.f-tareas i { display: flex; align-items: center; gap: .6rem; }
+.f-tareas i::before { content: ''; width: 1rem; height: 1rem; border-radius: 4px; border: 1.5px solid var(--line-2); flex-shrink: 0; }
+.f-tareas i::after { content: ''; height: .5rem; border-radius: 3px; background: var(--muted); flex: 1; }
+.f-tareas i.x::before { background: var(--b3); border-color: var(--b3); }
+.f-tareas i.x::after { background: var(--line-2); }
+.f-tareas .cnt { font-family: var(--mono); font-size: .75rem; color: var(--b3); }
+.f-battle { width: 100%; height: 100%; background: #5d3a3a; border-radius: 6px; position: relative; overflow: hidden; }
+.f-battle::before { content: ''; position: absolute; width: 55%; aspect-ratio: 1; border-radius: 50%; background: #b5e0ba; left: 22%; top: 18%; box-shadow: 40px 30px 0 -20px #f3ac3c; }
+.f-battle::after { content: ''; position: absolute; inset: 55% 0 0; background: #f3ac3c; clip-path: polygon(0 100%, 50% 0, 100% 100%); }
+
+/* ---------- Pie ---------- */
+footer { border-top: 1px solid var(--line); margin-top: 3rem; padding: 2rem 0 3rem; color: var(--dim); font-size: .85rem; }
+footer .wrap { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; align-items: center; }
+.reset { background: none; color: var(--dim); border: 1px solid var(--line); border-radius: 6px; padding: .35rem .8rem; font-family: var(--mono); font-size: .75rem; cursor: pointer; }
+.reset:hover { color: var(--b6); border-color: var(--b6); }
+
+@media (max-width: 820px) {
+  .proyecto { grid-template-columns: 1fr; }
+  .portada { min-height: 12rem; border-right: 0; border-bottom: 1px solid var(--line); }
+  .cols { grid-template-columns: 1fr; }
+  .cuerpo { padding: 1.2rem; }
+  .hero { padding-top: 2.5rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+  html { scroll-behavior: auto; }
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker">Aprendiendo web · Parte 2</div>
+    <h1>Taller <em>HTML + CSS</em><br>14 encargos</h1>
+    <p class="lead">Proyectos cortos y concretos: una entrada de cine, tu horario, un chat, la Net de Night City... Cada uno trae reglas que te cierran el camino fácil y problemas que no vas a saber resolver todavía. Esa es la idea.</p>
+
+    <div class="progreso">
+      <div class="row"><span>progreso</span><span><b id="total">0</b> / 14 completados</span></div>
+      <div class="segmentos" id="segmentos"></div>
+    </div>
+
+    <div class="como">
+      <div class="paso">
+        <div class="n">01</div>
+        <h3>Lee el encargo y las reglas</h3>
+        <p>Las reglas no son decorativas: están para obligarte a usar lo nuevo.</p>
+      </div>
+      <div class="paso">
+        <div class="n">02</div>
+        <h3>Pelea antes de abrir la brújula</h3>
+        <p>"Te vas a topar con..." te dice dónde vas a atascarte. Intenta al menos 20 minutos por tu cuenta. Si sigues perdido, abre <b>Estoy perdido</b>: ahí está la ruta, las etiquetas y qué buscar.</p>
+      </div>
+      <div class="paso">
+        <div class="n">03</div>
+        <h3>Marca la checklist</h3>
+        <p>Cuando todo esté marcado, el proyecto cuenta como hecho. Tu progreso se guarda en este navegador.</p>
+        <div class="arbol">proyectos-html-css/
+├── proyectos.html   ← esta página
+├── archivos/p01 … p14 ← assets
+└── <b>mis-proyectos/</b>
+    └── <b>p01/index.html + style.css</b></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<nav class="nav" aria-label="Bloques"><div class="wrap"><ul id="nav"></ul></div></nav>
+
+<main class="wrap" id="main"></main>
+
+<footer>
+  <div class="wrap">
+    <span>Referencias: <a href="https://developer.mozilla.org/es/">MDN</a> · <a href="https://caniuse.com">caniuse</a> · <a href="https://web.dev/learn/css">web.dev/learn/css</a></span>
+    <button class="reset" id="reset">reiniciar progreso</button>
+  </div>
+</footer>
+
+<script>
+const MDN = p => 'https://developer.mozilla.org/es/docs/' + p;
+const G = q => 'https://www.google.com/search?q=' + encodeURIComponent(q);
+const h = (n, p) => ({ n, u: MDN('Web/HTML/Reference/Elements/' + p), t: 'h' });
+const ha = (n, p) => ({ n, u: MDN('Web/HTML/Reference/Global_attributes/' + p), t: 'h' });
+const hat = (n, p) => ({ n, u: MDN('Web/HTML/Reference/Attributes/' + p), t: 'h' });
+const c = (n, p) => ({ n, u: MDN('Web/CSS/' + (p || n.replace(/[:()@]/g, ''))), t: 'c' });
+
+const BLOQUES = [
+  { id: 1, nombre: 'Cajas con personalidad', sub: 'Pseudo-elementos, variables, degradados y tus primeras transiciones.' },
+  { id: 2, nombre: 'CSS Grid', sub: 'Layouts en dos dimensiones y páginas que se adaptan a la pantalla.' },
+  { id: 3, nombre: 'Estados', sub: 'Formularios y listas que reaccionan sin una sola línea de JavaScript.' },
+  { id: 4, nombre: 'Apps de verdad', sub: 'Layouts completos: zonas fijas, zonas con scroll, texto que no rompe nada.' },
+  { id: 5, nombre: 'Movimiento', sub: 'Animaciones con @keyframes. Todo CSS.' },
+  { id: 6, nombre: 'Precisión e integrador', sub: 'Calcar al píxel y juntar todo en un sitio propio.' },
+];
+
+const P = [
+/* ============ P01 ============ */
+{ id: 'P01', b: 1, titulo: 'Entrada de cine', tiempo: '1 sesión',
+  portada: { img: 'archivos/p01/poster.jpg' },
+  encargo: 'Diseña la entrada para el estreno de <i>Órbita Roja</i>: póster a un lado, datos de la función al otro, una línea punteada que separa la parte que se arranca y dos "mordiscos" semicirculares arriba y abajo de esa línea.',
+  reglas: ['Los semicírculos no pueden ser imágenes ni <code>&lt;div&gt;</code>s extra.', 'Nada de <code>px</code> en tamaños de letra.', 'La fecha y hora van en un elemento que la máquina entienda.'],
+  topes: ['¿Cómo dibujo un círculo que parezca un agujero sin añadir elementos al HTML?', '¿Por qué mi <code>::before</code> no aparece aunque le puse tamaño y color?', 'Pongo <code>em</code> dentro de algo con <code>em</code> y el texto se descontrola. ¿Por qué?', '¿Cómo uso una fuente de Google Fonts?'],
+  archivos: [['archivos/p01/poster.jpg', 'póster']],
+  extra: 'un código de barras solo con CSS (busca <code>repeating-linear-gradient</code>).',
+  ruta: {
+    pasos: ['Estructura: un contenedor <code>.entrada</code> con dos partes, <code>.principal</code> (póster + datos) y <code>.talon</code> (la parte que se arranca). Flex, que ya dominas.', 'Separa las dos partes con <code>border-left: 2px dashed</code> en el talón.', 'Los mordiscos: en el talón pon <code>position: relative</code> y crea un <code>::before</code> y un <code>::after</code> con <code>position: absolute</code>, <code>border-radius: 50%</code> y el <b>mismo color que el fondo de la página</b>. Colócalos con <code>top</code>/<code>bottom</code> negativos para que queden medio fuera.', 'Todo pseudo-elemento necesita <code>content: \'\'</code>, aunque esté vacío. Sin eso no existe.', 'Tamaños: fija <code>font-size</code> en el <code>html</code> y usa <code>rem</code> para todo. Usa <code>em</code> solo para cosas que deben escalar con su propio texto (como el padding de un botón).', 'Fecha: <code>&lt;time datetime="2026-10-14T21:30"&gt;mié 14 oct · 9:30 p.m.&lt;/time&gt;</code>.'],
+    tags: [c('::before'), c('::after'), c('content'), c('rem', 'length#rem'), c('@font-face'), c('letter-spacing'), c('text-transform'), c('border-style'), h('<time>', 'time')],
+    buscar: ['css ticket shape notch pseudo element', 'diferencia entre em y rem css', 'como usar google fonts en html', 'css pseudo element not showing'],
+    consejos: ['El truco del agujero es una ilusión: el círculo es del color del fondo, no un hueco real. Si el fondo de la página es una imagen, el truco falla. Busca <code>mask</code> si quieres un hueco de verdad (difícil, opcional).', 'Para ver dónde está cada pseudo-elemento, dale un color chillón mientras lo colocas. Luego lo cambias.', 'Mira el póster en DevTools con <code>object-fit</code>: te va a servir en P03.'],
+  },
+  check: ['La entrada tiene póster, título, sala, fila/asiento, fecha y precio', 'Los dos mordiscos están hechos con ::before/::after', 'Hay una línea punteada entre la entrada y el talón', 'Todos los tamaños de letra están en rem', 'Usé una fuente de Google Fonts', 'La fecha está dentro de un <time> con datetime'],
+},
+/* ============ P02 ============ */
+{ id: 'P02', b: 1, titulo: 'Carta de restaurante', tiempo: '1 sesión',
+  portada: { img: 'archivos/p02/logo.jpg' },
+  encargo: 'La carta de <i>La Nonna</i>, una trattoria inventada: entradas, pastas, postres y bebidas. Entre el nombre del plato y el precio van los puntitos que llenan el espacio: <code>Lasaña ........ S/ 32</code>. Un plato está en oferta, con el precio viejo tachado.',
+  reglas: ['Colores y fuentes definidos una sola vez al principio del CSS: cambiar la marca = tocar 3 líneas.', 'Los puntitos se adaptan solos al ancho: nada de escribir "......" a mano.', 'Fondo con la textura de papel.'],
+  topes: ['¿Cómo hago que los puntos llenen justo el espacio que sobra?', '¿Qué etiqueta tiene sentido para "nombre, descripción, precio"?', '¿Cómo guardo un color en una variable y lo reutilizo?', 'Precio tachado: ¿<code>&lt;s&gt;</code> o <code>&lt;del&gt;</code>?'],
+  archivos: [['archivos/p02/papel.jpg', 'textura'], ['archivos/p02/logo.jpg', 'logo']],
+  extra: 'modo noche de la carta cambiando <b>solo</b> las variables dentro de una clase <code>.noche</code>.',
+  ruta: {
+    pasos: ['Arriba del CSS: <code>:root { --tinta: #2b2118; --acento: #b5452b; --fuente-titulos: ... }</code> y luego usa <code>color: var(--tinta)</code> en todas partes.', 'Cada plato: una fila en flex con tres hijos, nombre, un <code>&lt;span class="puntos"&gt;</code> vacío y precio.', 'Al span de puntos dale <code>flex: 1</code> (ocupa lo que sobra) y <code>border-bottom: 2px dotted</code>. Ajusta <code>align-items</code> para que la línea quede a la altura del texto.', 'Para la semántica, mira <code>&lt;dl&gt;</code>, <code>&lt;dt&gt;</code> y <code>&lt;dd&gt;</code>: una lista de término y definición.', '<code>&lt;del&gt;</code> = "esto se quitó del documento" y <code>&lt;s&gt;</code> = "esto ya no es correcto". Lee ambas en MDN y decide tú.', 'Fondo: <code>background-image: url(...)</code> + <code>background-repeat</code> o <code>background-size</code>.'],
+    tags: [c('--variables', 'Using_CSS_custom_properties'), c('var()', 'var'), h('<dl>', 'dl'), h('<dt>', 'dt'), h('<dd>', 'dd'), h('<del>', 'del'), h('<s>', 's'), h('<ins>', 'ins'), c('font-variant-numeric'), c('background-size')],
+    buscar: ['css dot leaders menu flexbox', 'css custom properties tutorial', 'diferencia entre del y s html', 'css variables override in class'],
+    consejos: ['Las variables se heredan: si redefines <code>--tinta</code> dentro de <code>.noche</code>, todo lo que está dentro cambia. Eso resuelve el reto extra.', '<code>font-variant-numeric: tabular-nums</code> hace que todos los números midan lo mismo y los precios quedan alineados. Pequeño detalle, gran diferencia.', 'Busca inspiración en "restaurant menu design" en Pinterest antes de empezar.'],
+  },
+  check: ['Hay al menos 4 secciones con 3+ platos cada una', 'Los puntitos se estiran solos al cambiar el ancho de la ventana', 'Todos los colores y fuentes vienen de variables en :root', 'Usé <dl>/<dt>/<dd> o justifiqué otra estructura', 'Hay un precio tachado con <del> o <s>', 'La textura de papel está de fondo'],
+},
+/* ============ P03 ============ */
+{ id: 'P03', b: 1, titulo: 'Cartas coleccionables', tiempo: '1–2 sesiones',
+  portada: { img: 'archivos/p03/criatura-fuego.jpg' },
+  encargo: 'Tres cartas tipo Pokémon/Magic de criaturas inventadas: ilustración, nombre, tipo, stats (ataque, defensa, velocidad) y rareza. Al pasar el ratón la carta se levanta, se inclina un poco y brilla. Una de ellas es <b>legendaria</b> y tiene un borde holográfico.',
+  reglas: ['Las 3 cartas miden exactamente lo mismo aunque las imágenes tengan proporciones distintas (y las tienen, a propósito).', 'Las imágenes no se pueden deformar.', 'La carta legendaria reutiliza todo el CSS de las normales y solo añade lo diferente.'],
+  topes: ['La imagen se estira o se aplasta. ¿Cómo la recorto sin deformarla?', '¿Cómo fijo la proporción de una carta de verdad (63×88 mm) sin calcular altos?', '¿Cómo hago un borde con degradado?', 'El efecto hover salta de golpe. ¿Cómo lo suavizo?'],
+  archivos: [['archivos/p03/criatura-fuego.jpg', 'fuego 1:1'], ['archivos/p03/criatura-agua.jpg', 'agua 3:4'], ['archivos/p03/criatura-planta.jpg', 'planta 16:9']],
+  extra: 'que la carta se voltee al hacer clic y muestre el reverso (busca <code>backface-visibility</code> y el "checkbox hack").',
+  ruta: {
+    pasos: ['<code>.carta { aspect-ratio: 63 / 88; width: 16rem; }</code>: el alto sale solo.', 'La imagen dentro de un contenedor con alto fijo; a la <code>&lt;img&gt;</code> dale <code>width: 100%; height: 100%; object-fit: cover;</code>.', 'Stats con <code>&lt;meter min="0" max="100" value="70"&gt;</code>: es la etiqueta correcta para "valor dentro de un rango".', 'Hover: <code>.carta:hover { transform: translateY(-8px) rotate(-2deg); box-shadow: ... }</code>.', 'La suavidad la pone <code>transition: transform .3s, box-shadow .3s;</code> en <code>.carta</code>, <b>no</b> en <code>:hover</code>.', 'Legendaria: <code>class="carta legendaria"</code>. En CSS, <code>.carta.legendaria { ... }</code> solo con lo distinto.', 'Borde degradado: un truco es poner el degradado como fondo del contenedor y un hijo con fondo sólido y un poco de margen. Busca también <code>border-image</code>.'],
+    tags: [c('object-fit'), c('aspect-ratio'), c(':hover'), c('transition'), c('transform'), c('box-shadow'), c('linear-gradient()', 'gradient/linear-gradient'), c('radial-gradient()', 'gradient/radial-gradient'), c('border-image'), h('<meter>', 'meter')],
+    buscar: ['object-fit cover explained', 'css gradient border rounded corners', 'css card hover tilt effect transition', 'css holographic card effect'],
+    consejos: ['Si pones <code>transition</code> dentro de <code>:hover</code>, la animación funciona al entrar pero salta al salir. Pruébalo para entenderlo.', 'Para el brillo holográfico: un <code>::after</code> encima de la carta con un <code>linear-gradient</code> semitransparente y <code>mix-blend-mode: overlay</code>.', 'Estilizar <code>&lt;meter&gt;</code> es incómodo porque cada navegador lo pinta distinto. Si te frustra, está bien hacer la barra con un div y <code>width: 70%</code>, pero entiende por qué.'],
+  },
+  check: ['Las 3 cartas tienen el mismo tamaño', 'Ninguna imagen está deformada', 'El hover tiene transición suave al entrar Y al salir', 'La legendaria tiene borde con degradado', 'La legendaria no repite CSS de las normales', 'Las stats usan <meter> o una barra propia'],
+},
+/* ============ P04 ============ */
+{ id: 'P04', b: 2, titulo: 'Tu horario, versión 2', tiempo: '1–2 sesiones',
+  portada: { html: '<div class="fake"><div class="f-horario">' +
+    [['1/1/7', '#ff8a3d'], ['2/1/5', '#4cc9f0'], ['3/1/6', '#c77dff'], ['4/1/6', '#ffd23f'], ['5/1/6', '#b8f35a'], ['1/8/12', '#ffd23f'], ['2/5/8', '#ff4d6d'], ['3/6/9', '#4cc9f0'], ['4/6/13', '#c77dff'], ['5/6/10', '#ff8a3d']]
+      .map(([a, col]) => { const [x, y, z] = a.split('/'); return `<i style="grid-column:${x};grid-row:${y}/${z};background:${col}"></i>`; }).join('') + '</div></div>' },
+  encargo: 'Tu horario de la universidad otra vez, pero ahora <b>cada curso ocupa una altura proporcional a lo que dura</b>. En tu versión con tabla, "7:30–10:50" y "7:30–9:10" ocupaban lo mismo. Aquí no.',
+  reglas: ['Prohibido <code>&lt;table&gt;</code>.', 'Cada fila del grid equivale a 10 minutos.', 'El color de cada curso se define en el HTML con <code>style="--c: ..."</code>.', 'La fila de los días se queda fija al hacer scroll.'],
+  topes: ['¿Cómo digo "este bloque empieza en la fila 1 y ocupa 20 filas"?', 'Contar filas a mano es un dolor. ¿Se les puede poner nombre?', '¿Cómo hago que la cabecera no se vaya al hacer scroll?', 'Si dos cursos se solapan, ¿qué hace el grid?'],
+  archivos: [['../html_fundamentos/ejemplo2/calendario.html', 'tu horario v1']],
+  extra: 'en el móvil, un día por pantalla, y pasas al siguiente deslizando (<code>overflow-x</code> + <code>scroll-snap</code>).',
+  ruta: {
+    pasos: ['Contenedor con <code>display: grid</code>. Columnas: una estrecha para las horas + 7 días → <code>grid-template-columns: 4rem repeat(7, 1fr)</code>.', 'Filas: de 7:30 a 22:00 son 87 bloques de 10 min → <code>grid-template-rows: auto repeat(87, 1rem)</code> (la primera es la cabecera).', 'Cada curso es un <code>&lt;div&gt;</code> hijo directo del grid: <code>grid-column: 2</code> (lunes) y <code>grid-row: 2 / span 20</code> (7:30 → 10:50).', 'Líneas con nombre: <code>grid-template-columns: [horas] 4rem [lun] 1fr [mar] 1fr ...</code>, y luego <code>grid-column: lun</code>. Mucho más legible.', 'Color: en el HTML <code>style="--c: #4cc9f0"</code>; en el CSS <code>.curso { background: var(--c); }</code>.', 'Cabecera: <code>position: sticky; top: 0;</code> en las celdas de los días. Necesitan fondo, si no se transparentan.', 'Solapes: el grid los pone en la misma celda, uno encima del otro. Pruébalo con <code>opacity</code> o <code>z-index</code>.'],
+    tags: [c('display: grid', 'CSS_grid_layout'), c('grid-template-columns'), c('grid-template-rows'), c('repeat()', 'repeat'), c('fr', 'flex_value'), c('grid-row'), c('grid-column'), c('named lines', 'CSS_grid_layout/Grid_layout_using_named_grid_lines'), c('position: sticky', 'position')],
+    buscar: ['css grid calendar schedule layout', 'css grid named lines tutorial', 'position sticky not working', 'css grid span rows'],
+    consejos: ['Activa el inspector de grid de Firefox o Chrome (el botoncito "grid" al lado del elemento en DevTools): pinta las líneas numeradas. Es una ayuda enorme.', '<code>sticky</code> falla casi siempre por dos motivos: un padre con <code>overflow: hidden</code>, o te falta <code>top</code>.', 'Juega <a href="https://cssgridgarden.com/#es">Grid Garden</a> antes si te sientes perdido con grid (20 min, en español).', 'Piensa en la accesibilidad: una tabla le dice al lector de pantalla qué celda es de qué día. Con grid se pierde. ¿Cómo lo compensarías?'],
+  },
+  check: ['No hay ni un <table>', 'La altura de cada curso es proporcional a su duración', 'Usé líneas con nombre para los días', 'El color de cada curso viene de --c en el HTML', 'La cabecera de días se queda fija al hacer scroll', 'Tiene los datos reales de mi horario'],
+},
+/* ============ P05 ============ */
+{ id: 'P05', b: 2, titulo: 'Bento de "sobre mí"', tiempo: '1 sesión',
+  portada: { html: '<div class="fake"><div class="f-bento"><i></i><i></i><i></i><i></i><i></i></div></div>' },
+  encargo: 'Tu página de presentación en formato <b>bento</b> (las cajas de tamaños distintos que usa Apple en sus keynotes): foto, qué estudias, tu stack, lo que escuchas, un juego, tu ciudad. Grande en escritorio, una columna en el móvil.',
+  reglas: ['El layout se define con <code>grid-template-areas</code>.', 'En móvil se reorganiza en una sola columna <b>sin tocar el HTML</b>.', 'Los títulos crecen con la pantalla, pero con mínimo y máximo.'],
+  topes: ['¿Cómo "dibujo" el layout con nombres?', '¿Cómo cambio el layout según el ancho de la pantalla?', 'Tengo media queries pero en el móvil todo se ve diminuto. ¿Por qué?', '¿Cómo hago un tamaño de letra fluido con límites?'],
+  archivos: [],
+  faltan: 'Referencia visual: busca "bento grid" en Dribbble o Pinterest y elige una que te guste, como hiciste con el login. Las fotos, tuyas.',
+  extra: 'que una caja cambie su diseño según <b>su propio</b> ancho y no el de la pantalla (container queries).',
+  ruta: {
+    pasos: ['En el contenedor: <code>grid-template-areas: "foto foto stack" "foto foto musica" "ciudad juego juego";</code>. Cada string es una fila.', 'En cada caja: <code>grid-area: foto;</code>, etc.', 'Escribe primero el CSS del móvil (una columna) y luego <code>@media (min-width: 48rem) { ... }</code> con las áreas grandes. Eso es "mobile first".', 'Revisa que tu <code>&lt;head&gt;</code> tenga <code>&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</code>. Sin eso el móvil finge ser un escritorio.', 'Título fluido: <code>font-size: clamp(2rem, 6vw, 4.5rem);</code> (mínimo, ideal, máximo).'],
+    tags: [c('grid-template-areas'), c('grid-area'), c('@media'), h('<meta name=viewport>', 'meta/name/viewport'), c('clamp()', 'clamp'), c('min()', 'min'), c('vw', 'length#vw'), c('dvh', 'length#dvh'), c('@container')],
+    buscar: ['css bento grid layout grid-template-areas', 'mobile first media queries explained', 'meta viewport why needed', 'css clamp font size fluid typography'],
+    consejos: ['Las áreas tienen que ser rectángulos. Si dibujas una L, el CSS entero se invalida y no ves nada (mira la consola de DevTools).', 'Prueba tu página con el modo dispositivo de DevTools (Ctrl+Shift+M), no solo achicando la ventana.', 'Usa <code>rem</code> en las media queries en vez de <code>px</code>: respetan el tamaño de letra que eligió el usuario.'],
+  },
+  check: ['El layout grande usa grid-template-areas', 'En el móvil es una columna sin cambiar el HTML', 'Hay meta viewport en el head', 'Algún título usa clamp()', 'Tiene al menos 6 cajas con contenido real mío'],
+},
+/* ============ P06 ============ */
+{ id: 'P06', b: 2, titulo: 'Galería tipo Pinterest', tiempo: '1–2 sesiones',
+  portada: { img: 'archivos/p06/foto-06.jpg' },
+  encargo: 'Una galería de 14 fotos donde cada imagen mantiene su altura natural y encajan como ladrillos. Al hacer clic en una, se abre en grande encima de todo con el fondo desenfocado.',
+  reglas: ['Las columnas cambian solas según el ancho: 1 → 2 → 4.', 'El visor grande funciona sin JavaScript.', 'En el móvil se carga la versión pequeña de cada foto, no la grande.'],
+  topes: ['Con grid quedan huecos porque las fotos tienen alturas distintas. ¿Qué otra herramienta hace "columnas de periódico"?', 'Una foto se parte entre dos columnas. ¿Cómo lo evito?', '¿Cómo le digo al navegador "usa esta imagen en pantallas pequeñas y esta otra en grandes"?', 'El visor: ¿<code>:target</code> o <code>popover</code>? ¿Qué pasa con el botón atrás en cada caso?'],
+  archivos: [['archivos/p06/', '14 fotos grandes'], ['archivos/p06/pequenas/', '14 miniaturas (480px)']],
+  extra: 'al pasar el ratón la foto se oscurece y el título entra deslizándose desde abajo.',
+  ruta: {
+    pasos: ['Contenedor con <code>columns: 4 16rem;</code> (máximo 4, cada una de mínimo 16rem). Nada de grid aquí.', 'Cada foto en un <code>&lt;figure&gt;</code> con <code>&lt;figcaption&gt;</code>. Al figure: <code>break-inside: avoid;</code>.', 'Imágenes responsivas: <code>&lt;img src="pequenas/foto-01.jpg" srcset="pequenas/foto-01.jpg 480w, foto-01.jpg 1400w" sizes="(min-width: 60rem) 25vw, 100vw"&gt;</code>. Comprueba en DevTools → Network cuál se descarga.', 'Añade <code>loading="lazy"</code> a todas menos las primeras.', 'Visor con <code>:target</code>: cada miniatura es un <code>&lt;a href="#foto-3"&gt;</code>; el visor tiene <code>id="foto-3"</code> y está oculto hasta que <code>#foto-3:target</code> lo muestra.', 'Visor con <code>popover</code>: <code>&lt;button popovertarget="v3"&gt;</code> + <code>&lt;div id="v3" popover&gt;</code>. El navegador lo pone encima de todo y lo cierra con Esc.', 'Fondo desenfocado: <code>::backdrop</code> (popover) o una capa fija con <code>backdrop-filter: blur()</code>.'],
+    tags: [c('columns'), c('break-inside'), h('<figure>', 'figure'), h('<figcaption>', 'figcaption'), h('<picture>', 'picture'), hat('srcset', 'srcset'), hat('loading', 'loading'), c(':target'), ha('popover', 'popover'), c('::backdrop'), c('backdrop-filter'), c('inset')],
+    buscar: ['css masonry layout columns', 'srcset sizes explained simply', 'css lightbox target no javascript', 'html popover attribute tutorial'],
+    consejos: ['Con <code>columns</code> el orden va de arriba abajo por columna, no por filas. Es la limitación de este truco. Busca "CSS masonry" para ver lo que viene en el futuro.', 'Siempre pon <code>width</code> y <code>height</code> en las <code>&lt;img&gt;</code> (los de la foto real). Así la página no "salta" mientras cargan.', 'Tus fotos tienen tamaños variados a propósito: 9:16, 21:9, 1:1...'],
+  },
+  check: ['Las fotos mantienen su proporción y no hay huecos', 'Pasa de 1 a 2 a 4 columnas según el ancho', 'Ninguna foto queda partida entre dos columnas', 'Uso srcset/sizes y lo comprobé en la pestaña Network', 'El visor grande funciona sin JS', 'Cada foto tiene figcaption y alt'],
+},
+/* ============ P07 ============ */
+{ id: 'P07', b: 3, titulo: 'Registro con validación', tiempo: '1–2 sesiones',
+  portada: { html: '<div class="fake"><div class="f-form"><i class="ok"></i><i class="no"></i><i></i><div class="sw"></div></div></div>' },
+  encargo: 'El formulario de registro de una app inventada: los campos se ponen verdes o rojos según estén bien, la etiqueta "flota" hacia arriba al escribir, el checkbox de términos es un interruptor tipo iOS y el botón está gris hasta que todo sea válido.',
+  reglas: ['Cero JavaScript.', 'Nada de checkbox "de fábrica": el interruptor es tuyo.', 'Los campos no se ponen rojos antes de que el usuario escriba.', 'Con el teclado (Tab) siempre se ve dónde estás.'],
+  topes: ['<code>:invalid</code> pinta todo de rojo apenas carga la página. ¿Cómo espero a que el usuario toque el campo?', 'Etiqueta flotante: ¿cómo sabe el CSS si el input tiene texto?', '¿Cómo borro el aspecto por defecto de un checkbox?', '¿Cómo cambio el estilo del <b>botón</b> según el estado de <b>otro</b> elemento?'],
+  archivos: [],
+  faltan: 'Referencia visual: busca "sign up form" en Dribbble y elige una.',
+  extra: 'una barra de "fuerza de contraseña" que se llena solo con CSS según cumpla <code>minlength</code> y <code>pattern</code>.',
+  ruta: {
+    pasos: ['Estructura por campo: <code>&lt;div class="campo"&gt;&lt;input id="email" type="email" placeholder=" " required&gt;&lt;label for="email"&gt;Correo&lt;/label&gt;&lt;/div&gt;</code>. El label va <b>después</b> del input a propósito.', 'Etiqueta flotante: el placeholder es un espacio. Si el placeholder se ve, el campo está vacío: <code>input:not(:placeholder-shown) + label</code> o <code>input:focus + label</code> → súbela con <code>transform</code>.', 'Colores: <code>input:user-invalid</code> y <code>input:user-valid</code> solo se activan después de que el usuario interactúa. (<code>:invalid</code> se activa siempre.)', 'Interruptor: <code>input[type=checkbox] { appearance: none; }</code>, dale ancho, alto y <code>border-radius</code>, y dibuja la bolita con <code>::before</code>. Con <code>:checked::before</code> la mueves.', 'Botón: <code>form:has(:invalid) button { opacity: .4; pointer-events: none; }</code>.', 'Foco: <code>:focus-visible</code> con un <code>outline</code> claro.'],
+    tags: [c(':user-invalid'), c(':user-valid'), c(':invalid'), c(':placeholder-shown'), c(':focus-visible'), c(':checked'), c(':has()', ':has'), c('appearance'), c('accent-color'), c('outline'), hat('autocomplete', 'autocomplete'), ha('inputmode', 'inputmode')],
+    buscar: ['css floating label placeholder-shown', 'css toggle switch checkbox appearance none', 'user-invalid vs invalid css', 'css has selector form validation'],
+    consejos: ['El combinador <code>+</code> solo mira al hermano <b>siguiente</b>. Por eso el orden input → label importa.', '<code>:has()</code> es el selector "padre" que CSS no tuvo durante 20 años. Te va a salvar en P08 y P14.', 'Pon <code>autocomplete="email"</code>, <code>"new-password"</code>, etc.: el navegador rellena mejor y los gestores de contraseñas te lo agradecen.'],
+  },
+  check: ['Los campos solo se ponen rojos después de tocarlos', 'Las etiquetas flotan al escribir y al hacer foco', 'El interruptor de términos está hecho con appearance: none', 'El botón está desactivado mientras haya algo inválido (con :has)', 'Navegando con Tab siempre veo dónde estoy', 'Cero JavaScript'],
+},
+/* ============ P08 ============ */
+{ id: 'P08', b: 3, titulo: 'Lista de tareas que cuenta sola', tiempo: '1 sesión',
+  portada: { html: '<div class="fake"><div class="f-tareas"><span class="cnt">2 de 5 ✓</span><i class="x"></i><i></i><i class="x"></i><i></i><i></i></div></div>' },
+  encargo: 'Una lista de tareas del ciclo (úsala de verdad), agrupada por curso. Al marcar una, se tacha y se va al final de su grupo. Arriba pone "3 de 8 completadas". Cuando no queda nada pendiente, aparece "¡Todo listo! 🎉".',
+  reglas: ['Sin JavaScript.', 'El contador es real: si marco otra tarea, cambia.', 'No se reordena el HTML: el movimiento es visual.'],
+  topes: ['¿CSS puede contar cosas?', '¿Y contar solo las marcadas?', '¿Cómo muevo algo al final sin tocar el HTML?', '¿Cómo muestro un mensaje solo cuando todas están marcadas?'],
+  archivos: [],
+  extra: 'filtros "Todas / Pendientes / Hechas" con tres radio buttons + <code>:has()</code>.',
+  ruta: {
+    pasos: ['Cada tarea: <code>&lt;li&gt;&lt;label&gt;&lt;input type="checkbox"&gt; Entregar informe de redes&lt;/label&gt;&lt;/li&gt;</code>.', 'Contadores: en el contenedor <code>counter-reset: hechas total;</code>, en cada <code>li</code> <code>counter-increment: total;</code> y en <code>li:has(:checked)</code> <code>counter-increment: total hechas;</code>.', 'Muestra el resultado en un <code>::after</code> <b>que vaya después de la lista</b>: <code>content: counter(hechas) " de " counter(total);</code>. Luego lo puedes subir visualmente con flex + <code>order</code>.', 'Mover al final: la lista en flex column y <code>li:has(:checked) { order: 1; }</code>.', 'Tachado: <code>text-decoration: line-through</code> con <code>text-decoration-color</code> y <code>transition</code>.', 'Mensaje final: <code>.lista:not(:has(input:not(:checked))) .fin { display: block; }</code>. Léelo despacio: "una lista que no tiene ningún checkbox sin marcar".'],
+    tags: [c('counter-reset'), c('counter-increment'), c('counter()', 'counter'), c(':has()', ':has'), c(':not()', ':not'), c(':is()', ':is'), c(':where()', ':where'), c('order'), c('text-decoration'), c('::marker'), c('specificity', 'Specificity')],
+    buscar: ['css counters count checked checkboxes', 'css has not selector examples', 'flexbox order property', 'css specificity calculator'],
+    consejos: ['Los contadores solo cuentan lo que ya pasó en el documento. Si el <code>::after</code> que muestra el total está <b>antes</b> de las tareas, siempre dirá 0. Pon el contador al final del HTML y súbelo con <code>order</code>.', 'Si una regla "no se aplica", casi siempre es especificidad. DevTools te muestra la regla tachada y cuál ganó.', '<code>:where()</code> tiene especificidad 0 y <code>:is()</code> la del selector más fuerte. Buen tema para entender la especificidad a fondo.'],
+  },
+  check: ['El contador "X de Y" funciona de verdad', 'Las tareas marcadas se tachan con animación', 'Las marcadas bajan al final sin tocar el HTML', 'Aparece el mensaje final cuando todas están hechas', 'Está agrupada por curso', 'Cero JavaScript'],
+},
+/* ============ P09 ============ */
+{ id: 'P09', b: 4, titulo: 'Chat estilo WhatsApp', tiempo: '1–2 sesiones',
+  portada: { img: 'archivos/p09/avatar-ana.jpg' },
+  encargo: 'Una conversación con Ana sobre el examen de redes: cabecera fija con su foto y "en línea", burbujas a izquierda y derecha con su "piquito", hora y doble check azul, una nota de voz y la caja de escribir fija abajo.',
+  reglas: ['La cabecera y la caja de escribir no se mueven: <b>solo</b> hace scroll la conversación.', 'Ocupa exactamente la pantalla del móvil, ni más ni menos.', 'Solo el primer mensaje de cada racha lleva piquito.', 'Modo oscuro automático según el sistema.'],
+  topes: ['¿Cómo hago que solo el medio haga scroll y ocupe exactamente el alto que sobra?', 'El piquito: ¿cómo hago un triángulo con CSS?', '¿Qué selector significa "un mensaje mío que viene justo después de otro mío"?', 'El <code>&lt;audio controls&gt;</code> se ve feo y distinto en cada navegador.'],
+  archivos: [['archivos/p09/avatar-ana.jpg', 'avatar'], ['archivos/p09/avatar-grupo.jpg', 'avatar grupo'], ['archivos/p09/nota-de-voz.mp3', 'nota de voz']],
+  extra: 'que el chat empiece abajo del todo, como las apps reales (busca <code>flex-direction: column-reverse</code>).',
+  ruta: {
+    pasos: ['<code>body</code> o contenedor: <code>height: 100dvh; display: grid; grid-template-rows: auto 1fr auto;</code>. Cabecera, chat, caja.', 'Al chat: <code>overflow-y: auto;</code>. Solo él hace scroll.', 'Mensajes en flex column; los tuyos con <code>align-self: flex-end</code>, los de Ana con <code>flex-start</code>. <code>max-width: 75%</code>.', 'Piquito: <code>::before</code> con <code>clip-path: polygon(...)</code> o con el truco de los bordes transparentes. Posicionado absoluto en la esquina.', 'Rachas: <code>.mio + .mio::before { display: none; }</code> quita el piquito si el anterior también era tuyo.', 'Nota de voz: <code>&lt;audio controls src="..."&gt;</code> y estilízala por fuera (fondo, bordes). Sin JS no puedes hacer tus propios botones, y está bien.', 'Oscuro: define colores en variables y redefínelas dentro de <code>@media (prefers-color-scheme: dark)</code>.'],
+    tags: [c('overflow'), c('dvh', 'length#dvh'), c('clip-path'), c('adjacent combinator +', 'Next-sibling_combinator'), c(':first-child'), c(':nth-child()', ':nth-child'), c('align-self'), c('prefers-color-scheme', '@media/prefers-color-scheme'), h('<audio>', 'audio')],
+    buscar: ['css chat bubble tail clip-path', 'css fixed header footer scrollable middle grid', '100vh vs 100dvh mobile', 'css triangle border trick'],
+    consejos: ['<code>100vh</code> en el móvil incluye la barra del navegador y se corta. Por eso existe <code>dvh</code> (dynamic viewport height).', 'Si el chat no hace scroll y empuja la caja fuera de la pantalla, prueba <code>min-height: 0</code> en el chat. Es un clásico de grid/flex.', '<a href="https://bennettfeely.com/clippy/">Clippy</a> te genera polígonos para clip-path arrastrando puntos.'],
+  },
+  check: ['Solo la conversación hace scroll', 'Ocupa justo la pantalla en el móvil (probado en DevTools)', 'Las burbujas tienen piquito solo al inicio de cada racha', 'Hay horas y doble check', 'La nota de voz se reproduce', 'Cambia a oscuro según el sistema'],
+},
+/* ============ P10 ============ */
+{ id: 'P10', b: 4, titulo: 'Reproductor de música', tiempo: '2 sesiones',
+  portada: { img: 'archivos/p10/disco-01.jpg' },
+  encargo: 'Una mini-app tipo Spotify: barra lateral con playlists, zona central con los discos en cuadrícula y la barra del reproductor fija abajo con portada, título, barra de progreso y volumen. Cada canción tiene un menú "⋯".',
+  reglas: ['El layout completo de la app se hace con grid.', 'La barra de volumen es un <code>&lt;input type="range"&gt;</code> con tu diseño.', 'Los nombres largos se cortan con "..." en vez de romper el layout.', 'El menú "⋯" se abre encima de todo sin JS.'],
+  topes: ['¿Cómo le cambio el diseño a un <code>range</code>?', '<code>text-overflow: ellipsis</code> no hace nada. ¿Qué le falta?', 'Dentro de un flex sigue sin funcionar aunque le puse todo. ¿¡Por qué!?', '¿Cómo hago un menú flotante sin JS?'],
+  archivos: [['archivos/p10/disco-01.jpg', 'Neon Marea'], ['archivos/p10/disco-02.jpg', 'Tardes de Lluvia'], ['archivos/p10/disco-03.jpg', 'Los Faros'], ['archivos/p10/disco-04.jpg', 'Cumbre'], ['archivos/p10/disco-05.jpg', 'Medianoche en Barranco']],
+  faltan: 'Canciones: mmx no genera música. Descarga 5 pistas cortas libres de <a href="https://pixabay.com/es/music/">Pixabay Music</a> (o genéralas con otra herramienta) y guárdalas como <code>archivos/p10/cancion-01.mp3</code> … <code>05</code>.',
+  extra: 'un ecualizador de barritas que "bailan" junto a la canción que suena: un solo <code>@keyframes</code> y un <code>animation-delay</code> distinto por barra.',
+  ruta: {
+    pasos: ['App: <code>grid-template-columns: 16rem 1fr; grid-template-rows: 1fr auto; height: 100dvh;</code>. El reproductor ocupa las dos columnas (<code>grid-column: 1 / -1</code>).', 'Discos: <code>grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr))</code>. Así se acomodan solos, sin media queries.', 'Ellipsis necesita tres cosas juntas: <code>white-space: nowrap; overflow: hidden; text-overflow: ellipsis;</code>.', 'En flex, el hijo que contiene el texto necesita <code>min-width: 0</code>. Por defecto un item flex no se encoge por debajo de su contenido.', 'Range: <code>appearance: none</code> en el input y luego estiliza <code>::-webkit-slider-thumb</code> (Chrome) y <code>::-moz-range-thumb</code> (Firefox). Sí, hay que escribirlo dos veces.', 'Menú: <code>&lt;button popovertarget="m1"&gt;⋯&lt;/button&gt;&lt;div id="m1" popover&gt;...&lt;/div&gt;</code>.', 'Portada girando: <code>@keyframes girar { to { rotate: 360deg; } }</code> y <code>animation: girar 8s linear infinite</code>.'],
+    tags: [c('grid-column'), c('auto-fill', 'repeat#auto-fill'), c('minmax()', 'minmax'), c('text-overflow'), c('white-space'), c('min-width'), c('::-webkit-slider-thumb'), c('::-moz-range-thumb'), ha('popover', 'popover'), c('@keyframes'), c('animation')],
+    buscar: ['style input range css cross browser', 'text-overflow ellipsis flex child not working min-width 0', 'css grid auto-fill minmax', 'spotify clone html css layout'],
+    consejos: ['El problema del <code>min-width: 0</code> desespera a todo el mundo alguna vez. Cuando lo entiendas, lo vas a reconocer en todas partes.', '<a href="https://range-input-css.netlify.app/">range-input-css</a> te genera el CSS del slider para todos los navegadores. Úsalo después de intentarlo tú, para comparar.', 'Tienes 5 portadas: en la barra lateral puedes reutilizarlas en miniatura.'],
+  },
+  check: ['El layout de la app está hecho con grid', 'Los discos se acomodan solos al cambiar el ancho', 'Los títulos largos terminan en "..." y no rompen nada', 'El slider de volumen tiene mi diseño en Chrome y Firefox', 'El menú ⋯ se abre con popover', 'La portada gira'],
+},
+/* ============ P11 ============ */
+{ id: 'P11', b: 5, titulo: 'Sistema solar animado', tiempo: '1–2 sesiones',
+  portada: { img: 'archivos/p11/saturno.jpg' },
+  encargo: 'El Sol en el centro y cinco cuerpos girando en sus órbitas a distintas velocidades, con la Luna girando alrededor de la Tierra <b>mientras</b> la Tierra gira alrededor del Sol. Al pasar el ratón sobre un planeta aparece su ficha.',
+  reglas: ['Todos los planetas usan el <b>mismo</b> <code>@keyframes</code>; solo cambian variables.', 'Sin JavaScript.', 'Si el sistema pide "menos movimiento", todo se detiene.'],
+  topes: ['¿Cómo hago que algo gire alrededor de un punto que no es su centro?', 'La Luna: dos rotaciones a la vez, ¿cómo?', '¿Por qué <code>rotate() translate()</code> y <code>translate() rotate()</code> dan resultados tan distintos?', 'Al hacer hover el planeta se mueve y la ficha se escapa.'],
+  archivos: [['archivos/p11/sol.jpg', 'sol'], ['archivos/p11/tierra.jpg', 'tierra'], ['archivos/p11/luna.jpg', 'luna'], ['archivos/p11/marte.jpg', 'marte'], ['archivos/p11/jupiter.jpg', 'júpiter'], ['archivos/p11/saturno.jpg', 'saturno'], ['archivos/p11/estrellas.jpg', 'fondo']],
+  extra: 'un reloj analógico con agujas que avanzan "a saltos" usando <code>steps(60)</code>.',
+  ruta: {
+    pasos: ['Cada órbita es un <code>div</code> circular (borde fino, <code>border-radius: 50%</code>) centrado en el Sol. El planeta va <b>dentro</b> de la órbita, pegado a su borde.', 'Animas la órbita entera, no el planeta: <code>@keyframes orbitar { to { rotate: 360deg; } }</code>. Como el planeta es hijo, gira con ella.', 'Velocidad por variable: <code>.orbita { animation: orbitar var(--t) linear infinite; }</code> y en el HTML <code>style="--t: 12s"</code>.', 'La Luna: dentro del planeta Tierra, otra órbita pequeña con su propia animación. Rotación dentro de rotación.', 'Para entender el orden de los transforms: haz un cuadrado y prueba <code>rotate(45deg) translate(100px)</code> y al revés.', 'Hover: <code>.orbita:has(.planeta:hover) { animation-play-state: paused; }</code>.', '<code>@media (prefers-reduced-motion: reduce) { * { animation: none; } }</code>.'],
+    tags: [c('@keyframes'), c('animation'), c('animation-duration'), c('animation-timing-function'), c('animation-play-state'), c('transform-origin'), c('rotate'), c('transform'), c('filter'), c('prefers-reduced-motion', '@media/prefers-reduced-motion')],
+    buscar: ['css solar system animation tutorial', 'css transform order matters', 'css transform-origin explained', 'animation-play-state paused on hover'],
+    consejos: ['Las texturas tienen fondo negro. Con <code>border-radius: 50%</code> + <code>object-fit: cover</code> recortas el planeta limpio.', 'Brillo del Sol: <code>filter: drop-shadow(0 0 2rem orange)</code> o varias capas de <code>box-shadow</code>.', 'Si la Tierra se ve de cabeza por culpa de la rotación, dale al planeta la animación inversa (<code>animation-direction: reverse</code>) para que "no gire" sobre sí mismo. Un buen problema para pensar.'],
+  },
+  check: ['Hay 5+ cuerpos girando a velocidades distintas', 'Todos comparten un único @keyframes', 'La Luna gira alrededor de la Tierra en movimiento', 'El hover pausa el planeta y muestra su ficha', 'prefers-reduced-motion detiene todo', 'Cero JavaScript'],
+},
+/* ============ P12 ============ */
+{ id: 'P12', b: 5, titulo: 'Portada de un videojuego', tiempo: '2 sesiones',
+  portada: { img: 'archivos/p12/captura-01.jpg' },
+  encargo: 'La landing de <i>Ember Hollow</i>, un RPG inventado: vídeo de fondo en bucle con capa oscura, logo que aparece con animación al entrar, botón "JUGAR" que late, carrusel de capturas que se engancha a cada imagen y sección de personajes que aparecen al hacer scroll.',
+  reglas: ['El carrusel funciona sin JS y se "engancha" a cada captura.', 'El texto encima del vídeo siempre se lee bien.', 'Lighthouse: 90 o más en accesibilidad.', 'Al compartir el enlace se vería una imagen y una descripción (Open Graph).'],
+  topes: ['El vídeo debe cubrir toda la pantalla sin deformarse.', '¿Por qué el navegador no reproduce mi vídeo solo?', '¿Cómo hago un carrusel que se engancha?', '¿Se pueden disparar animaciones con el scroll sin JS?'],
+  archivos: [['archivos/p12/fondo-video.mp4', 'vídeo fondo'], ['archivos/p12/logo.jpg', 'logo'], ['archivos/p12/captura-01.jpg', 'capturas 1–4'], ['archivos/p12/personaje-caballera.jpg', 'personajes x3']],
+  faltan: 'Música de ambiente (opcional): mmx no genera música. Si la quieres, busca "fantasy ambient" en <a href="https://pixabay.com/es/music/">Pixabay Music</a>.',
+  extra: 'el logo tiene fondo negro: haz que se funda con el vídeo usando <code>mix-blend-mode: screen</code>.',
+  ruta: {
+    pasos: ['Vídeo: <code>&lt;video autoplay muted loop playsinline&gt;</code>. Sin <code>muted</code> el navegador bloquea el autoplay. Con <code>position: fixed; inset: 0; object-fit: cover;</code> cubre todo.', 'Capa oscura: un <code>::after</code> con <code>background: linear-gradient(...)</code> semitransparente. Más <code>text-shadow</code> en el texto.', 'Entrada del logo: <code>@keyframes aparecer { from { opacity: 0; translate: 0 2rem; } }</code>.', 'Botón que late: <code>scale</code> en un <code>@keyframes</code> con <code>infinite</code> y <code>alternate</code>.', 'Carrusel: contenedor con <code>display: flex; overflow-x: auto; scroll-snap-type: x mandatory;</code> y cada captura con <code>scroll-snap-align: center;</code>.', 'Scroll-driven: <code>animation-timeline: view();</code> + <code>animation-range</code>. Es CSS moderno: revisa en caniuse en qué navegadores funciona.', 'Open Graph: <code>&lt;meta property="og:title"&gt;</code>, <code>og:description</code>, <code>og:image</code> en el head.'],
+    tags: [h('<video>', 'video'), hat('playsinline', '../Elements/video#playsinline'), c('object-fit'), c('scroll-snap-type'), c('scroll-snap-align'), c('animation-timeline'), c('animation-range'), c('text-shadow'), c('mix-blend-mode'), c('animation-direction'), { n: 'og: meta', u: 'https://ogp.me/', t: 'h' }],
+    buscar: ['html video background autoplay muted playsinline', 'css scroll snap carousel', 'css scroll driven animations view timeline', 'open graph meta tags ejemplo'],
+    consejos: ['<a href="https://caniuse.com">caniuse.com</a>: aprende a leerlo ya. Verde = funciona, rojo = no. Para <code>animation-timeline</code> te hará falta.', 'Lighthouse está en DevTools → pestaña Lighthouse. Te dice exactamente qué falla (contraste, alt, etc.).', 'Un vídeo de fondo pesa. En la vida real se pone <code>poster="..."</code> para que se vea algo mientras carga. Usa una captura.'],
+  },
+  check: ['El vídeo cubre la pantalla, en bucle y sin sonido', 'El logo entra con animación', 'El botón JUGAR late', 'El carrusel se engancha a cada captura sin JS', 'Los personajes aparecen al hacer scroll (o hay alternativa si el navegador no lo soporta)', 'Lighthouse accesibilidad ≥ 90', 'Hay etiquetas Open Graph'],
+},
+/* ============ P13 ============ */
+{ id: 'P13', b: 6, titulo: 'CSS Battle ×3', tiempo: '1 sesión',
+  portada: { html: '<div class="fake"><div class="f-battle"></div></div>' },
+  encargo: 'Calca tres imágenes objetivo <b>al píxel</b> con el mínimo de HTML. Es un juego: <a href="https://cssbattle.dev">cssbattle.dev</a> compara tu resultado con el objetivo y te da un porcentaje.',
+  reglas: ['Máximo 2 elementos HTML por objetivo.', 'Mínimo 99% de coincidencia en el comparador.', 'Empieza por los targets 1, 2 y 3 de la primera batalla.'],
+  topes: ['¿Cómo hago formas raras con un solo div?', '¿Cómo dibujo varias formas con un único elemento?', 'Centrar: ¿cuántas formas conozco?'],
+  archivos: [],
+  faltan: 'Nada que descargar: todo está en <a href="https://cssbattle.dev">cssbattle.dev</a> (crea una cuenta gratis para guardar tus puntajes).',
+  ruta: {
+    pasos: ['Lee el objetivo: tamaño del lienzo (400×300), colores exactos (la web te los da) y posiciones.', 'Un elemento puede tener hasta 3 "formas": él mismo, <code>::before</code> y <code>::after</code>.', 'Con <code>box-shadow</code> múltiple (separado por comas) un solo círculo se convierte en varios.', 'Con varios <code>background</code> (degradados separados por comas) dibujas franjas y círculos en un solo elemento.', '<code>clip-path: polygon()</code> para triángulos y formas con puntas.', '<code>border-radius</code> acepta 8 valores (<code>50% 0 50% 0 / 30% 60%</code>...) para gotas y hojas.'],
+    tags: [c('clip-path'), c('border-radius'), c('box-shadow'), c('background'), c('conic-gradient()', 'gradient/conic-gradient'), c('place-items'), c('inset')],
+    buscar: ['cssbattle tips and tricks', 'multiple box-shadow shapes css', 'css border-radius 8 values', 'css conic gradient examples'],
+    consejos: ['No persigas el puntaje por caracteres al inicio: persigue el 100% de coincidencia. Lo corto viene después.', 'Mira las soluciones de otros <b>después</b> de terminar: aprenderás trucos que no sabías que existían.'],
+  },
+  check: ['Target 1 al ≥99%', 'Target 2 al ≥99%', 'Target 3 al ≥99%', 'Usé box-shadow o varios backgrounds en alguno', 'Usé clip-path en alguno'],
+},
+/* ============ P14 ============ */
+{ id: 'P14', b: 6, titulo: 'La Net antes del Blackwall', tiempo: '3–4 sesiones',
+  portada: { img: 'archivos/p14/merc-netrunner.jpg' },
+  encargo: 'Un sitio de la vieja Net de Night City, de esos que NetWatch vigila: fondo negro, texto de terminal, neón, scanlines de CRT y glitches. Tres páginas enlazadas: <b>1)</b> la landing de <i>Secure Your Soul</i> de Arasaka/Relic, "hackeada", con un mensaje oculto que aparece en el glitch; <b>2)</b> el catálogo de mercs de un fixer, filtrable por rol; <b>3)</b> el tablón de contratos, con una alerta "⚠ ICE DETECTADO".',
+  reglas: ['Un solo archivo CSS para las 3 páginas, ordenado: variables → base → componentes → páginas.', 'Scanlines, glitch y neón: solo CSS, cero imágenes.', 'El catálogo se filtra por rol (netrunner, solo, techie, nomad, medtech) sin JS.', 'La tabla de contratos no se rompe en el móvil.', 'Con "menos movimiento" activado, nada parpadea.'],
+  topes: ['¿Cómo pongo scanlines encima de toda la página sin bloquear los clics?', 'Texto glitch: dos copias del texto desplazadas en rojo y cian y cortadas a tiras.', 'Efecto máquina de escribir con cursor parpadeante.', 'Filtrar tarjetas con radio buttons.', 'Resaltar en el menú la página en la que estoy.', 'Un CSS de 400 líneas: ¿cómo no perderme?'],
+  archivos: [['archivos/p14/ciudad-video.mp4', 'vídeo ciudad'], ['archivos/p14/anuncio-secure-your-soul.mp3', 'anuncio (voz)'], ['archivos/p14/ciudad-noche.jpg', 'ciudad'], ['archivos/p14/torre-corp.jpg', 'torre'], ['archivos/p14/merc-netrunner.jpg', 'mercs x6']],
+  faltan: 'Música synthwave de fondo (opcional): mmx no genera música. Busca "cyberpunk synthwave" en <a href="https://pixabay.com/es/music/">Pixabay Music</a>.',
+  extra: '<code>@media print</code> que convierta la ficha de un merc en un dossier en blanco y negro: sin menú, sin fondos y con "CONFIDENCIAL" de marca de agua.',
+  ruta: {
+    pasos: ['Estructura: <code>index.html</code>, <code>mercs.html</code>, <code>contratos.html</code> y <code>net.css</code>. Mismo <code>&lt;header&gt;</code> y <code>&lt;nav&gt;</code> en las tres.', 'Scanlines: <code>body::after { content: \'\'; position: fixed; inset: 0; background: repeating-linear-gradient(transparent 0 2px, rgb(0 0 0 / .25) 2px 4px); pointer-events: none; }</code>.', 'Glitch: <code>&lt;h1 class="glitch" data-text="SECURE YOUR SOUL"&gt;</code>. En CSS, <code>::before</code> y <code>::after</code> con <code>content: attr(data-text)</code>, en <code>position: absolute</code> sobre el original, uno rojo y otro cian, animando <code>clip-path: inset(...)</code> para cortarlos en tiras.', 'Máquina de escribir: texto monoespaciado, <code>width</code> animado de <code>0</code> a <code>30ch</code> con <code>steps(30)</code>, <code>overflow: hidden</code>, y un <code>border-right</code> que parpadea.', 'Filtro: radios <code>name="rol"</code> arriba y tarjetas con <code>data-rol="netrunner"</code>. Regla: <code>body:has(#f-netrunner:checked) .merc:not([data-rol="netrunner"]) { display: none; }</code>.', 'Menú: <code>&lt;a href="mercs.html" aria-current="page"&gt;</code> y en CSS <code>nav a[aria-current="page"] { ... }</code>.', 'Organización: lee sobre BEM (<code>.merc__foto</code>, <code>.merc--legendario</code>) y sobre <code>@layer</code>. CSS ya permite anidar reglas como Sass.', 'Tabla en el móvil: o la metes en un contenedor con <code>overflow-x: auto</code>, o en una media query conviertes cada <code>tr</code> en una tarjeta con <code>display: block</code>.'],
+    tags: [c('attr()', 'attr'), ha('data-*', 'data-*'), c('[attr] selectors', 'Attribute_selectors'), c('clip-path'), c('steps()', 'easing-function/steps'), c('ch', 'length#ch'), c('text-shadow'), c('mix-blend-mode'), c('@layer'), c('nesting', 'CSS_nesting'), { n: 'aria-current', u: MDN('Web/Accessibility/ARIA/Reference/Attributes/aria-current'), t: 'h' }, ha('popover', 'popover'), c('@media print', '@media#print')],
+    buscar: ['css glitch text effect clip-path attr data-text', 'css crt scanlines effect', 'css typewriter animation steps ch', 'css filter cards radio buttons has selector', 'responsive table css cards mobile', 'BEM naming convention css'],
+    consejos: ['Neón: varias sombras en <code>text-shadow</code> del mismo color con desenfoques crecientes (<code>0 0 4px, 0 0 12px, 0 0 30px</code>).', 'Usa el amarillo de Cyberpunk (<code>#fcee0a</code>) como acento, el rojo Arasaka para las alertas y el cian para lo "hackeado". Guárdalos en variables desde el minuto uno.', 'Reutiliza tus cartas de P03 para las fichas de mercs y tu popover de P06/P10 para el ICE. Si te cuesta reutilizarlas, es señal de que ese CSS se puede mejorar.', 'Para el anuncio de voz usa <code>&lt;audio controls&gt;</code> dentro de un marco con estilo "transmisión interceptada".'],
+  },
+  check: ['3 páginas enlazadas con un único CSS', 'Scanlines encima de todo sin bloquear clics', 'Hay un título con glitch hecho con attr() y clip-path', 'Hay un texto con efecto máquina de escribir', 'El catálogo filtra por rol sin JS', 'La página actual se resalta en el menú con aria-current', 'La tabla de contratos funciona en el móvil', 'La alerta de ICE se abre con popover', 'prefers-reduced-motion apaga glitches y parpadeos'],
+},
+];
+
+/* ---------------- Render ---------------- */
+const COLORES = ['--b1', '--b2', '--b3', '--b4', '--b5', '--b6'];
+const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+let estado = {};
+try { estado = JSON.parse(localStorage.getItem('taller-v2') || '{}'); } catch { }
+const guardar = () => { try { localStorage.setItem('taller-v2', JSON.stringify(estado)); } catch { } };
+
+function tarjeta(p) {
+  const portada = p.portada.img
+    ? `<img src="${p.portada.img}" alt="" loading="lazy">`
+    : p.portada.html;
+  const lista = (arr, cls) => `<ul class="${cls}">${arr.map(x => `<li>${x}</li>`).join('')}</ul>`;
+  const archivos = p.archivos.length
+    ? `<div class="files">${p.archivos.map(([u, d]) => `<a href="${u}" target="_blank">${d}</a>`).join('')}</div>` : '';
+  const falta = p.faltan ? `<div class="falta"><b>Te toca conseguir:</b> ${p.faltan}</div>` : '';
+  const r = p.ruta;
+  return `
+  <article class="proyecto" id="${p.id}" style="--c: var(${COLORES[p.b - 1]})">
+    <div class="portada">${portada}<div class="id"><small>BLOQUE 0${p.b}</small>${p.id}</div></div>
+    <div class="cuerpo">
+      <div class="p-top">
+        <div>
+          <h3>${p.titulo}</h3>
+          <div class="meta"><span class="pill">⏱ ${p.tiempo}</span><span class="pill">${r.tags.length} conceptos nuevos</span></div>
+        </div>
+        <span class="estado" data-estado></span>
+      </div>
+      <p class="encargo">${p.encargo}</p>
+      <div class="cols">
+        <div class="caja"><h4>Reglas</h4>${lista(p.reglas, 'reglas')}</div>
+        <div class="caja"><h4>Te vas a topar con...</h4>${lista(p.topes, 'topes')}</div>
+      </div>
+      ${archivos || falta ? `<div class="archivos caja"><h4>Archivos</h4>${archivos}${falta}</div>` : ''}
+      ${p.extra ? `<p class="extra"><b>Reto extra:</b> ${p.extra}</p>` : ''}
+      <details class="ruta">
+        <summary>
+          <span class="brujula" aria-hidden="true"></span>
+          <span class="s-txt"><b>Estoy perdido</b><span>Ruta de investigación: qué hacer, qué etiquetas usar y qué buscar</span></span>
+        </summary>
+        <div class="ruta-body">
+          <div><h5>La ruta, paso a paso</h5><ol>${r.pasos.map(x => `<li>${x}</li>`).join('')}</ol></div>
+          <div><h5>Etiquetas y propiedades</h5><div class="tags">${r.tags.map(t => `<a class="${t.t}" href="${t.u}" target="_blank">${esc(t.n)}</a>`).join('')}</div></div>
+          <div><h5>Qué buscar</h5><div class="buscar">${r.buscar.map(q => `<a href="${G(q)}" target="_blank">${esc(q)}</a>`).join('')}</div></div>
+          <div><h5>Consejos</h5><div class="consejos">${r.consejos.map(x => `<p>${x}</p>`).join('')}</div></div>
+        </div>
+      </details>
+      <div class="check caja">
+        <h4>¿Lo lograste?</h4>
+        <ul>${p.check.map((x, i) => `<li><label><input type="checkbox" data-p="${p.id}" data-i="${i}"> ${esc(x)}</label></li>`).join('')}</ul>
+      </div>
+    </div>
+  </article>`;
+}
+
+const main = document.getElementById('main');
+main.innerHTML = BLOQUES.map(b => `
+  <section class="bloque" id="bloque-${b.id}" style="--c: var(${COLORES[b.id - 1]})">
+    <div class="bloque-head">
+      <div class="bloque-num">0${b.id}</div>
+      <div><h2>${b.nombre}</h2><p>${b.sub}</p></div>
+    </div>
+    ${P.filter(p => p.b === b.id).map(tarjeta).join('')}
+  </section>`).join('');
+
+document.getElementById('nav').innerHTML = BLOQUES.map(b =>
+  `<li><a href="#bloque-${b.id}" style="--c: var(${COLORES[b.id - 1]})">0${b.id} ${b.nombre}</a></li>`).join('');
+document.getElementById('segmentos').innerHTML = P.map(p =>
+  `<a href="#${p.id}" title="${p.id} · ${esc(p.titulo)}" style="--c: var(${COLORES[p.b - 1]})"></a>`).join('');
+
+function pintar() {
+  let hechos = 0;
+  P.forEach((p, idx) => {
+    const marcas = estado[p.id] || [];
+    const n = p.check.filter((_, i) => marcas[i]).length;
+    const st = n === 0 ? '' : n === p.check.length ? 'hecho' : 'curso';
+    if (st === 'hecho') hechos++;
+    const art = document.getElementById(p.id);
+    art.classList.toggle('hecho', st === 'hecho');
+    const e = art.querySelector('[data-estado]');
+    e.className = 'estado ' + st;
+    e.textContent = st === 'hecho' ? '✓ completado' : st === 'curso' ? `en curso · ${n}/${p.check.length}` : 'pendiente';
+    art.querySelectorAll('.check input').forEach(inp => inp.checked = !!marcas[inp.dataset.i]);
+    document.querySelectorAll('#segmentos a')[idx].className = st;
+  });
+  document.getElementById('total').textContent = hechos;
+}
+
+main.addEventListener('change', e => {
+  const t = e.target;
+  if (!t.matches('.check input')) return;
+  (estado[t.dataset.p] ||= [])[t.dataset.i] = t.checked;
+  guardar(); pintar();
+});
+document.getElementById('reset').addEventListener('click', () => {
+  if (confirm('¿Borrar todo el progreso?')) { estado = {}; guardar(); pintar(); }
+});
+pintar();
+</script>
+</body>
+</html>
